@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ReactNode, useState, useSyncExternalStore } from "react";
+import { FormEvent, ReactNode, useState, useSyncExternalStore } from "react";
 import {
   ArrowRight,
   Award,
@@ -240,6 +240,10 @@ function buildGmailComposeUrl(subject: string, body: string) {
   )}&body=${encodeURIComponent(body)}`;
 }
 
+function publicPath(path: string) {
+  return `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${path}`;
+}
+
 function SectionHeading({
   eyebrow,
   title,
@@ -295,6 +299,38 @@ export default function Home() {
 
   const toggleTheme = () => {
     saveTheme(theme === "dark" ? "light" : "dark");
+  };
+
+  const handleContactSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const name = String(formData.get("name") ?? "").trim();
+    const email = String(formData.get("email") ?? "").trim();
+    const message = String(formData.get("message") ?? "").trim();
+
+    if (!name || !email || !message) {
+      return;
+    }
+
+    window.open(
+      buildGmailComposeUrl(
+        "New portfolio hire request for Sankalp Shukla",
+        [
+          "Hi Sankalp,",
+          "",
+          "I want to discuss a project.",
+          "",
+          `Name: ${name}`,
+          `Email: ${email}`,
+          "",
+          "Message:",
+          message,
+        ].join("\n"),
+      ),
+      "_blank",
+      "noopener,noreferrer",
+    );
   };
 
   return (
@@ -453,7 +489,7 @@ export default function Home() {
               View Projects <ArrowRight size={18} />
             </button>
             <a
-              href="/Sankalp_Resume.pdf"
+              href={publicPath("/Sankalp_Resume.pdf")}
               className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-7 py-4 text-sm font-bold text-white transition hover:border-cyan-200/60 hover:bg-white/10"
             >
               Download Resume <ExternalLink size={17} />
@@ -488,7 +524,7 @@ export default function Home() {
           <div className="relative overflow-hidden rounded-[2rem] border border-white/15 bg-white/5 p-3 shadow-2xl shadow-black/40 backdrop-blur">
             <div className="relative aspect-[4/5] overflow-hidden rounded-[1.35rem] bg-slate-900">
               <Image
-                src="/sankalp-profile.jpeg"
+                src={publicPath("/sankalp-profile.jpeg")}
                 alt="Sankalp Shukla"
                 fill
                 priority
@@ -553,7 +589,7 @@ export default function Home() {
                 <GlowCard key={service.title}>
                   <div className="relative mb-6 aspect-[16/10] overflow-hidden rounded-xl border border-white/10 bg-slate-900">
                     <Image
-                      src={service.image}
+                      src={publicPath(service.image)}
                       alt={`${service.title} gig preview`}
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
@@ -587,7 +623,7 @@ export default function Home() {
             <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
               <div className="relative aspect-[16/9] overflow-hidden rounded-xl border border-white/10 bg-slate-900">
                 <Image
-                  src="/gigs/ai-solutions.png"
+                  src={publicPath("/gigs/ai-solutions.png")}
                   alt="AI solutions gig preview"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -821,8 +857,7 @@ export default function Home() {
 
           <GlowCard>
             <form
-              action="/api/contact"
-              method="POST"
+              onSubmit={handleContactSubmit}
               className="space-y-5"
             >
               <div>
@@ -879,8 +914,7 @@ export default function Home() {
                 Send Hire Request <Zap size={17} />
               </button>
               <p className="text-center text-xs leading-5 text-slate-400">
-                This sends the details directly to sankalpshukla212@gmail.com
-                through the portfolio email service.
+                This opens a prefilled email to sankalpshukla212@gmail.com.
               </p>
             </form>
           </GlowCard>
