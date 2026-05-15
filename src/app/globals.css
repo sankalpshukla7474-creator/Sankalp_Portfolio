@@ -1,26 +1,206 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0b0f19;
+  --foreground: #f8fafc;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-jakarta);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--background);
+  overflow-x: hidden;
 }
 
 body {
+  min-height: 100vh;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+button,
+a,
+input,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: rgba(52, 211, 153, 0.35);
+  color: #ffffff;
+}
+
+.theme-root {
+  background:
+    radial-gradient(circle at 50% -10%, rgba(16, 185, 129, 0.16), transparent 34%),
+    radial-gradient(circle at 105% 32%, rgba(6, 182, 212, 0.13), transparent 30%),
+    #0b0f19;
+  transition:
+    background 240ms ease,
+    color 240ms ease;
+}
+
+.theme-light {
+  background:
+    radial-gradient(circle at 50% -10%, rgba(16, 185, 129, 0.16), transparent 34%),
+    radial-gradient(circle at 105% 32%, rgba(6, 182, 212, 0.15), transparent 30%),
+    #f5fbff;
+  color: #0f172a;
+}
+
+.theme-light nav {
+  background: rgba(245, 251, 255, 0.82);
+}
+
+.theme-light .bg-\[\#0B0F19\] {
+  background-color: #f5fbff;
+}
+
+.theme-light .bg-slate-950\/55,
+.theme-light .bg-slate-950\/75,
+.theme-light .bg-slate-950\/95 {
+  background-color: rgba(255, 255, 255, 0.78);
+}
+
+.theme-light .bg-white\/5,
+.theme-light .bg-white\/\[0\.045\],
+.theme-light .bg-white\/\[0\.04\],
+.theme-light .bg-white\/\[0\.03\],
+.theme-light .bg-white\/\[0\.05\] {
+  background-color: rgba(255, 255, 255, 0.72);
+}
+
+.theme-light .text-white,
+.theme-light .text-slate-100,
+.theme-light .text-slate-200 {
+  color: #0f172a;
+}
+
+.theme-light .text-slate-300 {
+  color: #334155;
+}
+
+.theme-light .text-slate-400 {
+  color: #64748b;
+}
+
+.theme-light .text-emerald-100,
+.theme-light .text-emerald-200,
+.theme-light .text-emerald-300 {
+  color: #047857 !important;
+}
+
+.theme-light .text-cyan-100,
+.theme-light .text-cyan-200,
+.theme-light .text-cyan-300 {
+  color: #0e7490 !important;
+}
+
+.theme-light .text-amber-100 {
+  color: #92400e !important;
+}
+
+.theme-light .border-white\/10,
+.theme-light .border-white\/15 {
+  border-color: rgba(15, 23, 42, 0.12);
+}
+
+.theme-light .border-emerald-300\/20,
+.theme-light .border-emerald-300\/30,
+.theme-light .border-emerald-300\/35,
+.theme-light .border-emerald-300\/40 {
+  border-color: rgba(5, 150, 105, 0.36) !important;
+}
+
+.theme-light .border-cyan-300\/20,
+.theme-light .border-cyan-300\/30 {
+  border-color: rgba(8, 145, 178, 0.34) !important;
+}
+
+.theme-light .bg-emerald-300\/10,
+.theme-light .bg-emerald-300\/\[0\.07\] {
+  background-color: rgba(16, 185, 129, 0.14) !important;
+}
+
+.theme-light .bg-cyan-300\/10 {
+  background-color: rgba(6, 182, 212, 0.14) !important;
+}
+
+.theme-light .bg-amber-300\/10 {
+  background-color: rgba(245, 158, 11, 0.12) !important;
+}
+
+.theme-light .border-amber-300\/20 {
+  border-color: rgba(217, 119, 6, 0.3) !important;
+}
+
+.theme-light .from-emerald-300.to-cyan-300 {
+  color: #082f49;
+}
+
+.theme-light input,
+.theme-light textarea {
+  background-color: rgba(255, 255, 255, 0.82);
+  color: #0f172a;
+}
+
+.theme-light input::placeholder,
+.theme-light textarea::placeholder {
+  color: #64748b;
+}
+
+section {
+  scroll-margin-top: 96px;
+}
+
+img {
+  max-width: 100%;
+}
+
+.animate-rise {
+  animation: rise-in 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-rise-delay {
+  animation: rise-in 820ms cubic-bezier(0.22, 1, 0.36, 1) 120ms both;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .animate-rise,
+  .animate-rise-delay {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
